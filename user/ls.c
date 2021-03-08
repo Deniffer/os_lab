@@ -10,15 +10,15 @@ fmtname(char *path)
   char *p;
 
   // Find first character after last slash.
-  for(p=path+strlen(path); p >= path && *p != '/'; p--)
+  for(p=path+strlen(path); p >= path && *p != '/'; p--) //p initial advance len(path) and back
     ;
-  p++;
+  p++; // if path_name = ./file1/a/b/file_c  then p-> "file_c"
 
   // Return blank-padded name.
   if(strlen(p) >= DIRSIZ)
-    return p;
-  memmove(buf, p, strlen(p));
-  memset(buf+strlen(p), ' ', DIRSIZ-strlen(p));
+    return p;//return file name
+  memmove(buf, p, strlen(p)); //if len(p)<DIRSIZ, move *p content into buf,
+  memset(buf+strlen(p), ' ', DIRSIZ-strlen(p)); //对buf[len(p)]开始的部分进行初始化为空，就是占满buf的空间
   return buf;
 }
 
@@ -27,7 +27,7 @@ ls(char *path)
 {
   char buf[512], *p;
   int fd;
-  struct dirent de;
+  struct dirent de; //directory entry 目录项
   struct stat st;
 
   if((fd = open(path, 0)) < 0){
@@ -51,15 +51,15 @@ ls(char *path)
       printf("ls: path too long\n");
       break;
     }
-    strcpy(buf, path);
-    p = buf+strlen(buf);
+    strcpy(buf, path); //copy from path to buf
+    p = buf+strlen(buf);// means p->buf[0] advance strlen(buf)--> p->buf[strlen(buf)]也就是现在p->buf[strlen(buf)]
     *p++ = '/';
     while(read(fd, &de, sizeof(de)) == sizeof(de)){
-      if(de.inum == 0)
-        continue;
-      memmove(p, de.name, DIRSIZ);
-      p[DIRSIZ] = 0;
-      if(stat(buf, &st) < 0){
+      if(de.inum == 0) //此文件夹无文件
+         continue;
+      memmove(p, de.name, DIRSIZ); //拼接路径字符串 like ./a/b + p
+      p[DIRSIZ] = 0;  //将p[14]->0代表结束?
+      if(stat(buf, &st) < 0){ //将buf(也就是path) 进行stat
         printf("ls: cannot stat %s\n", buf);
         continue;
       }

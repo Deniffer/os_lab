@@ -35,10 +35,10 @@ strlen(const char *s)
 void*
 memset(void *dst, int c, uint n)
 {
-  char *cdst = (char *) dst;
+  char *cdst = (char *) dst; //cdst ->dst
   int i;
   for(i = 0; i < n; i++){
-    cdst[i] = c;
+    cdst[i] = c;//
   }
   return dst;
 }
@@ -96,7 +96,7 @@ atoi(const char *s)
 }
 
 void*
-memmove(void *vdst, const void *vsrc, int n)
+memmove(void *vdst, const void *vsrc, int n) //dst = destinaiton src = source? copy content from src into dst
 {
   char *dst;
   const char *src;
