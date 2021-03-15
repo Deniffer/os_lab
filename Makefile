@@ -150,7 +150,6 @@ UPROGS=\
 	$U/_wc\
 	$U/_zombie\
 	$U/_sleep\
-	$U/_uptime\
 	$U/_pingpong\
 	$U/_primes\
 	$U/_find\
@@ -308,3 +307,5 @@ myapi.key:
 
 .PHONY: handin tarball tarball-pref clean grade handin-check
 
+gdb:
+	gdb-multiarch kernel/kernel
